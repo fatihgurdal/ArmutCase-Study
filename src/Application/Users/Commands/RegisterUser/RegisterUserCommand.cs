@@ -5,25 +5,25 @@ using Domain.Events;
 
 using MediatR;
 
-namespace Application.Users.Commands.CreateUser
+namespace Application.Users.Commands.RegisterUser
 {
-    public class CreateUserCommand : IRequest<Guid>
+    public class RegisterUserCommand : IRequest<Guid>
     {
         public string UserName { get; init; }
         public string FirstName { get; init; }
         public string LastName { get; init; }
     }
 
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Guid>
+    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Guid>
     {
         private readonly IApplicationDbContext _context;
 
-        public CreateUserCommandHandler(IApplicationDbContext context)
+        public RegisterUserCommandHandler(IApplicationDbContext context)
         {
             _context = context;
         }
 
-        public async Task<Guid> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             var entity = new User
             {

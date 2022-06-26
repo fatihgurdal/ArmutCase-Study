@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Users.Commands.CreateUser
+namespace Application.Users.Commands.RegisterUser
 {
-    public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
+    public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
     {
-        public CreateUserCommandValidator()
+        public RegisterUserCommandValidator()
         {
             RuleFor(x => x.UserName).MaximumLength(100).NotEmpty();
             RuleFor(x => x.FirstName).MaximumLength(50).NotEmpty();

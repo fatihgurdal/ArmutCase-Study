@@ -14,10 +14,15 @@ namespace WebApi.Controllers
         {
             _logger = logger;
         }
+        //TODO: create user
+        //TODO: send message
+        //TODO: get messages
+        //TODO: block user
+        //TODO: get activties
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<Guid>> Create([FromBody] CreateUserCommand command)
+        public async Task<ActionResult<Guid>> Register([FromBody] RegisterUserCommand command)
         {
             var id = await Mediator.Send(command);
 

@@ -6,10 +6,10 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.Users.Commands.EventHandlers
 {
-    public class UserCreatedEventHandler : INotificationHandler<UserCreatedEvent>
+    public class UserRegisterEventHandler : INotificationHandler<UserCreatedEvent>
     {
-        private readonly ILogger<UserCreatedEventHandler> _logger;
-        public UserCreatedEventHandler(ILogger<UserCreatedEventHandler> logger)
+        private readonly ILogger<UserRegisterEventHandler> _logger;
+        public UserRegisterEventHandler(ILogger<UserRegisterEventHandler> logger)
         {
             _logger = logger;
         }
