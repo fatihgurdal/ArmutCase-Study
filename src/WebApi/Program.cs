@@ -26,7 +26,7 @@ else
     app.UseHsts(); //raf dolu görünsün
 }
 
-app.UseHealthChecks("/health");
+//app.UseHealthChecks("/health");
 app.UseHttpsRedirection();
 
 app.UseSwaggerUi3(settings =>
