@@ -12,6 +12,7 @@ namespace Application.Users.Commands.RegisterUser
         public string UserName { get; init; }
         public string FirstName { get; init; }
         public string LastName { get; init; }
+        public string Password { get; set; }
     }
 
     public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Guid>
@@ -29,12 +30,14 @@ namespace Application.Users.Commands.RegisterUser
             {
                 UserName = request.UserName,
                 FirstName = request.FirstName,
-                LastName = request.LastName
+                LastName = request.LastName,
+                Password = request.Password, //TODO: md5 ile hash yapılabilir. Login doğrularkende hashlenmiş hali kontrol edilebilir.
+                BlockUsers = new List<Guid>()
             };
 
             entity.AddDomainEvent(new UserCreatedEvent(entity));
 
-            await _context.Users.InsertOneAsync(entity);
+            await _context.Users.InsertOneAsync(entity, cancellationToken: cancellationToken);
 
             return entity.Id;
         }

@@ -20,5 +20,6 @@ namespace Infrastructure.Persistence
             this.Users = mongoDatabase.GetCollection<User>(nameof(User));
         }
         public IMongoCollection<User> Users { get; init; }
+        public IMongoCollection<Message> Messages { get; init; }
     }
 }

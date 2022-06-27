@@ -7,6 +7,8 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 
 using Microsoft.OpenApi.Models;
+using CleanArchitecture.WebUI.Services;
+using Application.Common.Interfaces;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -14,7 +16,7 @@ public static class ConfigureServices
 {
     public static IServiceCollection AddWebUIServices(this IServiceCollection services)
     {
-        //services.AddSingleton<ICurrentUserService, CurrentUserService>();
+        services.AddSingleton<ICurrentUserService, CurrentUserService>();
 
         services.AddHttpContextAccessor();
 
