@@ -1,32 +1,43 @@
-using Application.Users.Commands.CreateUser;
+using Application.Users.Commands.RegisterUser;
+using Application.Users.Queries.Login;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController : ApiControllerBase
+    [Authorize]
+    public class AccountController : ApiControllerBase
     {
-        private readonly ILogger<UserController> _logger;
+        private readonly ILogger<AccountController> _logger;
 
-        public UserController(ILogger<UserController> logger)
+        public AccountController(ILogger<AccountController> logger)
         {
             _logger = logger;
         }
-        //TODO: create user
-        //TODO: send message
-        //TODO: get messages
-        //TODO: block user
-        //TODO: get activties
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [AllowAnonymous]
         public async Task<ActionResult<Guid>> Register([FromBody] RegisterUserCommand command)
         {
             var id = await Mediator.Send(command);
 
             return CreatedAtAction(nameof(Get), new { id }, default);
+        }
+
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Route("Account/Login")]
+        [AllowAnonymous]
+        public async Task<ActionResult<TokenVm>> Login([FromBody] LoginQuery query)
+        {
+            var token = await Mediator.Send(query);
+
+            return Ok(token);
         }
 
         [HttpGet]

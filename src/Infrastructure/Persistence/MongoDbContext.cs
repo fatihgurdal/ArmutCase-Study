@@ -17,8 +17,8 @@ namespace Infrastructure.Persistence
             mongoClient = new MongoClient(options.Value.ConnectionString);
             mongoDatabase = mongoClient.GetDatabase(options.Value.DatabaseName);
 
-            this.Users = new MongoCollection<User>(mongoDatabase.GetCollection<User>(nameof(User)));
+            this.Users = mongoDatabase.GetCollection<User>(nameof(User));
         }
-        public IEntityCollection<User> Users { get; init; }
+        public IMongoCollection<User> Users { get; init; }
     }
 }

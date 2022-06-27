@@ -1,3 +1,5 @@
+using Application.Users.Options;
+
 using Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.Configure<MongoOptions>(builder.Configuration.GetSection(MongoOptions.Mongo));
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.JwtOption));
 
 var app = builder.Build();
 

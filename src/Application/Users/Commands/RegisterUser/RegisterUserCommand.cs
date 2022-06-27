@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Application.Users.Commands.RegisterUser
 {
-    public class RegisterUserCommand : IRequest<Guid>
+    public record RegisterUserCommand : IRequest<Guid>
     {
         public string UserName { get; init; }
         public string FirstName { get; init; }
@@ -34,7 +34,7 @@ namespace Application.Users.Commands.RegisterUser
 
             entity.AddDomainEvent(new UserCreatedEvent(entity));
 
-            await _context.Users.Add(entity);
+            await _context.Users.InsertOneAsync(entity);
 
             return entity.Id;
         }
