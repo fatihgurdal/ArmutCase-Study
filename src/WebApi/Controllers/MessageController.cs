@@ -1,5 +1,6 @@
 using Application.Users.Commands.RegisterUser;
 using Application.Users.Commands.SendMessage;
+using Application.Users.Queries.GetMessages;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,15 @@ namespace WebApi.Controllers
         {
             await Mediator.Send(command);
             return Ok();
+        }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Route("{userName}")]
+        public async Task<ActionResult<IEnumerable<MessageVm>>> GetMessages([FromRoute] string userName)
+        {
+            var messages = await Mediator.Send(new GetMessagesQuery() { UserName = userName });
+            return Ok(messages);
         }
     }
 }

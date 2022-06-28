@@ -30,7 +30,7 @@ namespace WebApi.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [Route("Account/Login")]
+        [Route("Login")]
         [AllowAnonymous]
         public async Task<ActionResult<TokenVm>> Login([FromBody] LoginQuery query)
         {
