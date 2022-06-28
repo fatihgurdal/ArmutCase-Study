@@ -7,5 +7,6 @@
         public string LastName { get; set; }
         public string Password { get; set; }
         public ICollection<Guid> BlockUsers { get; set; }
+        public ICollection<UserActivity> Activities { get; set; }
     }
 }

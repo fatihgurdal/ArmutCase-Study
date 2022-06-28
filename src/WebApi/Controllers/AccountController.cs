@@ -1,6 +1,7 @@
 using Application.Users.Commands.BlockUser;
 using Application.Users.Commands.RegisterUser;
 using Application.Users.Queries.Login;
+using Application.Users.Queries.UserActivities;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -55,6 +56,16 @@ namespace WebApi.Controllers
             await Mediator.Send(query);
 
             return NoContent();
+        }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Route("Activities")]
+        public async Task<ActionResult> Activities()
+        {
+            var activities = await Mediator.Send(new UserActivitiesQuery());
+
+            return Ok(activities);
         }
     }
 }
