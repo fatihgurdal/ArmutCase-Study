@@ -6,7 +6,7 @@ using MediatR;
 
 using MongoDB.Driver;
 
-namespace Application.Users.Commands.SendMessage
+namespace Application.Messages.Commands.SendMessage
 {
     public record SendMessageCommand : IRequest
     {

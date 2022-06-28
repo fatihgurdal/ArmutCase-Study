@@ -1,6 +1,5 @@
-﻿using Application.Users.Commands.RegisterUser;
-using Application.Users.Commands.SendMessage;
-using Application.Users.Queries.GetMessages;
+﻿using Application.Messages.Commands.SendMessage;
+using Application.Messages.Queries.GetMessages;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

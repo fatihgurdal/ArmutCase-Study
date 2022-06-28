@@ -4,7 +4,7 @@ using MediatR;
 
 using MongoDB.Driver;
 
-namespace Application.Users.Queries.GetMessages;
+namespace Application.Messages.Queries.GetMessages;
 
 public record GetMessagesQuery : IRequest<IEnumerable<MessageVm>>
 {
