@@ -17,10 +17,6 @@ namespace WebApi.Controllers
         {
             _logger = logger;
         }
-        //TODO: register user
-        //TODO: send message
-        //TODO: get messages
-        //TODO: block user
         //TODO: get activties
 
         [HttpPost]

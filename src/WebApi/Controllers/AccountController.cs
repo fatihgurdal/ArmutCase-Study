@@ -1,3 +1,4 @@
+using Application.Users.Commands.BlockUser;
 using Application.Users.Commands.RegisterUser;
 using Application.Users.Queries.Login;
 
@@ -44,6 +45,16 @@ namespace WebApi.Controllers
         public Task<ActionResult> Get([FromRoute] Guid id)
         {
             throw new NotImplementedException($"For create endpoint. Request id:{id}");
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [Route("Block")]
+        public async Task<ActionResult> Block([FromBody] BlockUserCommand query)
+        {
+            await Mediator.Send(query);
+
+            return NoContent();
         }
     }
 }
