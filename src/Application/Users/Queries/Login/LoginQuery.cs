@@ -1,6 +1,8 @@
 ﻿using Application.Common.Interfaces;
 using Application.Users.Options;
 
+using Domain.Events;
+
 using MediatR;
 
 using Microsoft.Extensions.Options;
@@ -33,9 +35,13 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, TokenVm>
 
     public async Task<TokenVm> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
-        var user = await _context.Users.Find(x => x.UserName == request.UserName && x.Password == request.Password)
-                                .FirstOrDefaultAsync() ?? throw new Exception("TODO: custom login failed");
-
+        var user = await _context.Users.Find(x => x.UserName == request.UserName)
+                                .FirstOrDefaultAsync() ?? throw new Exception("TODO: custom user not found");
+        if (!user.Password.Equals(request.Password))
+        {
+            user.AddDomainEvent(new UserLoginEvent(user, "1.2.3.4")); //TODO: read ip fix
+            throw new Exception("TODO: custom login failed");
+        }
         var claims = new[] {
                         new Claim(JwtRegisteredClaimNames.Sub, _options.Value.Subject),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
@@ -51,6 +57,8 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, TokenVm>
             claims,
             expires: DateTime.UtcNow.AddDays(1),//case çalışması olduğu için süreyi uzun verdim.
             signingCredentials: signIn);
+
+        user.AddDomainEvent(new UserLoginEvent(user, "1.2.3.4")); //TODO: read ip fix
 
         return new TokenVm
         {

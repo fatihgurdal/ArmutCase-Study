@@ -35,7 +35,7 @@ namespace Application.Users.Commands.RegisterUser
                 BlockUsers = new List<Guid>()
             };
 
-            entity.AddDomainEvent(new UserCreatedEvent(entity));
+            entity.AddDomainEvent(new RegisterUserEvent(entity, "1.2.3.4")); //TODO: read ip fix
 
             await _context.Users.InsertOneAsync(entity, cancellationToken: cancellationToken);
 

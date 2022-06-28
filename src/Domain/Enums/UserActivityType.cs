@@ -2,7 +2,8 @@
 {
     public enum UserActivityType
     {
-        Login = 0,
+        Register = 0,
+        Login,
         FailedLogin,
         UserBlock //VB eklenebilir
     }
