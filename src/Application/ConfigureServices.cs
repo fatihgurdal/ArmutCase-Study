@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+
+using Application.Common.Behaviours;
 //using Application.Common.Behaviours;//will be deleted or edited if not needed
 
 using FluentValidation;
@@ -12,10 +14,10 @@ public static class ConfigureServices
     {
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddMediatR(Assembly.GetExecutingAssembly());
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
         //will be deleted or edited if not needed
         //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
         //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehaviour<,>));
-        //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
         //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
 
         return services;
