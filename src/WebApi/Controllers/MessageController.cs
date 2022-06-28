@@ -1,4 +1,4 @@
-using Application.Users.Commands.RegisterUser;
+﻿using Application.Users.Commands.RegisterUser;
 using Application.Users.Commands.SendMessage;
 using Application.Users.Queries.GetMessages;
 
@@ -17,7 +17,11 @@ namespace WebApi.Controllers
         {
             _logger = logger;
         }
-        //TODO: get activties
+        /// <summary>
+        /// Gerçek zamanlı değildir. Kullanıcı adı ve mesaj içeriği ile gönderim yapabilir.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -26,7 +30,11 @@ namespace WebApi.Controllers
             await Mediator.Send(command);
             return Ok();
         }
-
+        /// <summary>
+        /// İki kişi arasındaki mesajları döner. Route'da gönderilen kullanıcı adının alıcı ve gönderici olduğu ortak sohbet mesajlarını döner
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Route("{userName}")]

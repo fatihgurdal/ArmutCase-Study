@@ -1,4 +1,4 @@
-using Application.Users.Commands.BlockUser;
+﻿using Application.Users.Commands.BlockUser;
 using Application.Users.Commands.RegisterUser;
 using Application.Users.Queries.Login;
 using Application.Users.Queries.UserActivities;
@@ -18,7 +18,11 @@ namespace WebApi.Controllers
         {
             _logger = logger;
         }
-
+        /// <summary>
+        /// Yeni hesap oluşturma. Minimum bilgi ile password'ü açık bir şekilde yapar.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [AllowAnonymous]
@@ -29,7 +33,11 @@ namespace WebApi.Controllers
             return CreatedAtAction(nameof(Get), new { id }, default);
         }
 
-
+        /// <summary>
+        /// JWT ile Bearer token üretir. Ürettiği token Bearer'ın standart kullanımı ile Header'da gönderilmesi gerekir.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Route("Login")]
@@ -48,6 +56,11 @@ namespace WebApi.Controllers
             throw new NotImplementedException($"For create endpoint. Request id:{id}");
         }
 
+        /// <summary>
+        /// Bir kullanıcı engellemek veya engelini kaldırmak için kullanılır. Eğer kişi engelli olduğu halde engellenmeye çalışılırsa hata vermez. Aynı şekilde engeli kalkmış birini yine engeli kaldırılacaksa hata vermez. 
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [Route("Block")]
@@ -57,7 +70,10 @@ namespace WebApi.Controllers
 
             return NoContent();
         }
-
+        /// <summary>
+        /// Kullanıcının bazı aktivitelerini listeler. Login, kayıt, başarısız girişler ve kullanıcı engellemeleri
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Route("Activities")]
