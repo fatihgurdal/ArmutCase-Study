@@ -26,11 +26,13 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, TokenVm>
 {
     private readonly IApplicationDbContext _context;
     private readonly IOptions<JwtOptions> _options;
+    private readonly IMediator _mediator;
 
-    public LoginQueryHandler(IApplicationDbContext context, IOptions<JwtOptions> options)
+    public LoginQueryHandler(IApplicationDbContext context, IOptions<JwtOptions> options, IMediator mediator)
     {
         _context = context;
         _options = options;
+        _mediator = mediator;
     }
 
     public async Task<TokenVm> Handle(LoginQuery request, CancellationToken cancellationToken)
@@ -39,7 +41,7 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, TokenVm>
                                 .FirstOrDefaultAsync() ?? throw new Exception("TODO: custom user not found");
         if (!user.Password.Equals(request.Password))
         {
-            user.AddDomainEvent(new UserLoginEvent(user, "1.2.3.4")); //TODO: read ip fix
+            await _mediator.Publish(new FailedLoginEvent(user, "1.2.3.4")); //TODO: read ip fix
             throw new Exception("TODO: custom login failed");
         }
         var claims = new[] {
@@ -58,7 +60,7 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, TokenVm>
             expires: DateTime.UtcNow.AddDays(1),//case çalışması olduğu için süreyi uzun verdim.
             signingCredentials: signIn);
 
-        user.AddDomainEvent(new UserLoginEvent(user, "1.2.3.4")); //TODO: read ip fix
+        await _mediator.Publish(new UserLoginEvent(user, "1.2.3.4"));
 
         return new TokenVm
         {

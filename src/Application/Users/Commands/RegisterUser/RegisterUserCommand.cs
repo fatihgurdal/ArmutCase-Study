@@ -18,10 +18,12 @@ namespace Application.Users.Commands.RegisterUser
     public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Guid>
     {
         private readonly IApplicationDbContext _context;
+        private readonly IMediator _mediator;
 
-        public RegisterUserCommandHandler(IApplicationDbContext context)
+        public RegisterUserCommandHandler(IApplicationDbContext context,IMediator mediator)
         {
             _context = context;
+            _mediator = mediator;
         }
 
         public async Task<Guid> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
@@ -35,7 +37,7 @@ namespace Application.Users.Commands.RegisterUser
                 BlockUsers = new List<Guid>()
             };
 
-            entity.AddDomainEvent(new RegisterUserEvent(entity, "1.2.3.4")); //TODO: read ip fix
+            await _mediator.Publish(new RegisterUserEvent(entity, "1.2.3.4"));
 
             await _context.Users.InsertOneAsync(entity, cancellationToken: cancellationToken);
 

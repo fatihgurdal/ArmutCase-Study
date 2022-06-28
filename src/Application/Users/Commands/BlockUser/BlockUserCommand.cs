@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces;
 
 using Domain.Entities;
+using Domain.Events;
 
 using MediatR;
 
@@ -18,11 +19,13 @@ namespace Application.Users.Commands.BlockUser
     {
         private readonly IApplicationDbContext _context;
         private readonly ICurrentUserService _currentUserService;
+        private readonly IMediator _mediator;
 
-        public BlockUserCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService)
+        public BlockUserCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService,IMediator mediator)
         {
             _context = context;
             _currentUserService = currentUserService;
+            _mediator = mediator;
         }
 
         public async Task<Unit> Handle(BlockUserCommand request, CancellationToken cancellationToken)
@@ -42,7 +45,7 @@ namespace Application.Users.Commands.BlockUser
                 user.BlockUsers.Remove(request.UserId);
             }
             await _context.Users.ReplaceOneAsync(filter, user, cancellationToken: cancellationToken);
-
+            await _mediator.Publish(new BlockUserEvent(user, request.UserId));
             return Unit.Value;
         }
     }

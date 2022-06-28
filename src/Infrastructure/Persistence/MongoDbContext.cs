@@ -2,6 +2,8 @@
 
 using Domain.Entities;
 
+using MediatR;
+
 using Microsoft.Extensions.Options;
 
 using MongoDB.Driver;
@@ -10,8 +12,9 @@ namespace Infrastructure.Persistence
 {
     public class MongoDbContext : IApplicationDbContext
     {
-        IMongoDatabase mongoDatabase { get; }
-        MongoClient mongoClient { get; }
+        private readonly IMongoDatabase mongoDatabase;
+        private readonly MongoClient mongoClient;
+
         public MongoDbContext(IOptions<MongoOptions> options)
         {
             mongoClient = new MongoClient(options.Value.ConnectionString);
