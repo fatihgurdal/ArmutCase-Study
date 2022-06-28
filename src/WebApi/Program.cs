@@ -1,4 +1,4 @@
-using Application.Users.Options;
+嚜簑sing Application.Users.Options;
 
 using Infrastructure.Persistence;
 
@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
-builder.Services.AddWebUIServices();
+builder.Services.AddWebUIServices(builder.Configuration);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -15,7 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.Configure<MongoOptions>(builder.Configuration.GetSection(MongoOptions.Mongo));
-builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.JwtOption));
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.Jwt));
 
 var app = builder.Build();
 
@@ -26,7 +26,7 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseHsts(); //raf dolu g顤�ns�n
+    app.UseHsts(); //raf dolu g繹r羹ns羹n
 }
 
 
@@ -38,7 +38,7 @@ app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Case Study 
 app.UseStaticFiles();
 app.UseRouting();
 
-app.UseAuthorization();
+app.UseAuthentication();//Otomatik tamamlama ile ilk 4 harfi yazd覺ktan sonra enter(Authorization se癟en) yapan parmaklar覺m sende hesap vereceksin. Review eden k覺zmas覺n ruh halime g繹re ufak telefek notlar b覺rak覺yorum.
 //app.UseIdentityServer(); //Kalkabilir.
 app.UseAuthorization();
 

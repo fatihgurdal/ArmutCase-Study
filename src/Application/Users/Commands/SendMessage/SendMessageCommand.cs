@@ -28,11 +28,11 @@ namespace Application.Users.Commands.SendMessage
         public async Task<Unit> Handle(SendMessageCommand request, CancellationToken cancellationToken)
         {
             var user = await _context.Users.Find(x => x.UserName == request.UserName)
-                                    .FirstOrDefaultAsync() ?? throw new Exception("TODO: custom exception"); //Username kontrolü
+                                    .FirstOrDefaultAsync() ?? throw new Exception("TODO: custom exception not found username"); //Username kontrolü
 
             if (user.BlockUsers?.Any(x => x == _currentUserService.UserId) == true) //engel kontorlü
             {
-                throw new Exception("TODO: custom exception");
+                throw new Exception("TODO: custom exception bloked user");
             }
             var entity = new Message
             {

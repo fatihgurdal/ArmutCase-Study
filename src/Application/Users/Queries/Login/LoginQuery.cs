@@ -34,26 +34,27 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, TokenVm>
     public async Task<TokenVm> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
         var user = await _context.Users.Find(x => x.UserName == request.UserName && x.Password == request.Password)
-                                .FirstOrDefaultAsync() ?? throw new Exception("TODO custom exception");
+                                .FirstOrDefaultAsync() ?? throw new Exception("TODO: custom login failed");
 
+        var claims = new[] {
+                        new Claim(JwtRegisteredClaimNames.Sub, _options.Value.Subject),
+                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                        new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
+                        new Claim("UserId", user.Id.ToString())//TODO: add const
+                    };
 
-        var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
-            new Claim(ClaimTypes.Role,"Standart"),//Rollük bir ister olmadığı için
-        };
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_options.Value.Secret);
-        var tokenDescriptor = new SecurityTokenDescriptor
-        {
-            Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddDays(7),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-        };
-        var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Value.Key));
+        var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var token = new JwtSecurityToken(
+            _options.Value.Issuer,
+            _options.Value.Audience,
+            claims,
+            expires: DateTime.UtcNow.AddDays(1),//case çalışması olduğu için süreyi uzun verdim.
+            signingCredentials: signIn);
+
         return new TokenVm
         {
-            Token = tokenHandler.WriteToken(securityToken)
+            Token = new JwtSecurityTokenHandler().WriteToken(token)
         };
 
     }

@@ -1,4 +1,5 @@
 using Application.Users.Commands.RegisterUser;
+using Application.Users.Commands.SendMessage;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
     [Authorize]
     public class MessageController : ApiControllerBase
     {
@@ -22,21 +22,12 @@ namespace WebApi.Controllers
         //TODO: block user
         //TODO: get activties
 
-        //[HttpPost]
-        //[ProducesResponseType(StatusCodes.Status201Created)]
-        //public async Task<ActionResult> Send([FromBody] SendMessageCommand command)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //[HttpGet]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[Route("[controller]/{userName:string}")]
-        //public async Task<ActionResult> GetMessages([FromRoute] string userName)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public async Task<ActionResult> SendMessage([FromBody] SendMessageCommand command)
+        {
+            await Mediator.Send(command);
+            return Ok();
+        }
     }
 }

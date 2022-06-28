@@ -9,12 +9,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using CleanArchitecture.WebUI.Services;
 using Application.Common.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Application.Users.Options;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ConfigureServices
 {
-    public static IServiceCollection AddWebUIServices(this IServiceCollection services)
+    public static IServiceCollection AddWebUIServices(this IServiceCollection services, ConfigurationManager configurationManager)
     {
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
 
@@ -61,6 +65,24 @@ public static class ConfigureServices
                     }
                   });
         });
+
+        #region Authentication
+        var jwtOption = configurationManager.GetSection(JwtOptions.Jwt).Get<JwtOptions>();
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(x =>
+        {
+            x.RequireHttpsMetadata = false;
+            x.SaveToken = true;
+            x.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidAudience = jwtOption.Audience,
+                ValidIssuer = jwtOption.Issuer,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOption.Key))
+            };
+        });
+        #endregion
 
         return services;
     }
