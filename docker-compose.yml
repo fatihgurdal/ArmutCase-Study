@@ -1,0 +1,50 @@
+version: "3.8"
+services:
+  mongo-db:
+    image: mongo:4.2.3-bionic
+    container_name: mongo-db
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_DATABASE=CaseStudyDockerDb
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=123456
+    volumes:
+      # named volumes
+      - mongo-db:/data/db
+      - mongoconfig:/data/configdb
+    networks:
+      - armut-localhost
+
+  webapi:
+    container_name: webapi
+    image: webapi
+    build:
+      context: .
+      dockerfile: Dockerfile    
+    ports:
+      - 12001:5000
+    links:
+      - mongo-db
+    depends_on:
+      - "mongo-db"
+    networks:
+      - armut-localhost
+    restart: always
+    environment:
+      Mongo:ConnectionString: "mongodb://admin:123456@mongo-db:27017"
+      Mongo:DatabaseName: "CaseStudyDockerDb"
+      ASPNETCORE_ENVIRONMENT: "Development"
+      Jwt:Key: "aef4e4ea-017d-4d47-8475-d8ac0995e6b6"
+      Jwt:Issuer: "JWTAuthenticationServer"
+      Jwt:Audience: "JWTServicePostmanClient"
+      Jwt:Subject: "JWTServiceAccessToken"
+
+volumes:
+    mongo-db:
+    mongoconfig:
+
+networks:
+  armut-localhost:
+    driver: bridge
