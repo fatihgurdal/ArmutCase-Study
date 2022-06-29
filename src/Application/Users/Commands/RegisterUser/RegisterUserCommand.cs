@@ -5,6 +5,8 @@ using Domain.Events;
 
 using MediatR;
 
+using MongoDB.Driver;
+
 namespace Application.Users.Commands.RegisterUser
 {
     public record RegisterUserCommand : IRequest<Guid>
@@ -20,7 +22,7 @@ namespace Application.Users.Commands.RegisterUser
         private readonly IApplicationDbContext _context;
         private readonly IMediator _mediator;
 
-        public RegisterUserCommandHandler(IApplicationDbContext context,IMediator mediator)
+        public RegisterUserCommandHandler(IApplicationDbContext context, IMediator mediator)
         {
             _context = context;
             _mediator = mediator;
@@ -28,6 +30,10 @@ namespace Application.Users.Commands.RegisterUser
 
         public async Task<Guid> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
+            var existUser = await _context.Users.Find(x => x.UserName == request.UserName)
+                                    .FirstOrDefaultAsync();
+            if (existUser != null) throw new Exception("TODO: custom exception. This username is used");
+
             var entity = new User
             {
                 UserName = request.UserName,
