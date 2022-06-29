@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 //using Respawn;
 
 namespace Application.IntegrationTests;
-
+[SetUpFixture]
 public class Testing
 {
     private static WebApplicationFactory<Program> _factory = null!;

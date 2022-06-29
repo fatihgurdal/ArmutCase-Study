@@ -3,17 +3,19 @@ using Application.Users.Queries.GetUser;
 
 using FluentAssertions;
 
+using NUnit.Framework;
+
 using System;
 using System.Threading.Tasks;
-
-using Xunit;
 
 namespace Application.IntegrationTests.Users.Commands;
 
 using static Testing;
+
+[TestFixture]
 public class RegisterUserTests
 {
-    [Fact]
+    [Test]
     public async Task RegisterUser_Sucess()
     {
         var newGuid = Guid.NewGuid().ToString();
