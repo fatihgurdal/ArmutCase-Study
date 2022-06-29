@@ -1,16 +1,18 @@
-﻿using WebUI.Filters;
+﻿using Application.Common.Interfaces;
+using Application.Users.Options;
+
+using CleanArchitecture.WebUI.Services;
 
 using FluentValidation.AspNetCore;
 
-using Microsoft.AspNetCore.Mvc;
-
-using Microsoft.OpenApi.Models;
-using CleanArchitecture.WebUI.Services;
-using Application.Common.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+
 using System.Text;
-using Application.Users.Options;
+
+using WebUI.Filters;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

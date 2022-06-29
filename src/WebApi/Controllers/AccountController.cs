@@ -1,5 +1,6 @@
 ﻿using Application.Users.Commands.BlockUser;
 using Application.Users.Commands.RegisterUser;
+using Application.Users.Queries.GetUser;
 using Application.Users.Queries.Login;
 using Application.Users.Queries.UserActivities;
 
@@ -51,9 +52,9 @@ namespace WebApi.Controllers
 
         [HttpGet]
         [Route("{id:guid}")]
-        public Task<ActionResult> Get([FromRoute] Guid id)
+        public async Task<ActionResult> Get([FromRoute] Guid id)
         {
-            throw new NotImplementedException($"For create endpoint. Request id:{id}");
+            return Ok(await Mediator.Send(new GetUserQuery() { UserId = id }));
         }
 
         /// <summary>

@@ -35,7 +35,7 @@ public class RegisterUserTests
         user.Should().NotBeNull();
         user.Id.Should().NotBeEmpty();
         user.UserName.Should().Be(command.UserName);
-        user.FirstName.Should().Be(command.FirstName);  
+        user.FirstName.Should().Be(command.FirstName);
         user.LastName.Should().Be(command.LastName);
     }
 }

@@ -1,7 +1,4 @@
-﻿//using Infrastructure.Identity;
-using Infrastructure.Persistence;
-
-using MediatR;
+﻿using MediatR;
 
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
@@ -13,7 +10,6 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-//using Respawn;
 
 namespace Application.IntegrationTests;
 [SetUpFixture]

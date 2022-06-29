@@ -21,7 +21,7 @@ namespace Application.Users.Commands.BlockUser
         private readonly ICurrentUserService _currentUserService;
         private readonly IMediator _mediator;
 
-        public BlockUserCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService,IMediator mediator)
+        public BlockUserCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService, IMediator mediator)
         {
             _context = context;
             _currentUserService = currentUserService;

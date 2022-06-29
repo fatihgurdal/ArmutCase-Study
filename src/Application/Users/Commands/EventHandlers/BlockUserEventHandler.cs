@@ -37,7 +37,7 @@ namespace Application.Users.Commands.EventHandlers
 
             notification.User.Activities.Add(new UserActivity()
             {
-                IpAddress = String.Empty,
+                IpAddress = string.Empty,
                 ActivityDescription = description,
                 Date = DateTime.UtcNow,
                 Type = Domain.Enums.UserActivityType.UserBlock
