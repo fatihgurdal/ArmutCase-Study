@@ -2,8 +2,6 @@
 
 using Domain.Entities;
 
-using MediatR;
-
 using Microsoft.Extensions.Options;
 
 using MongoDB.Driver;
