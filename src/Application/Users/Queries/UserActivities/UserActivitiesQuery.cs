@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interfaces;
 
 using Domain.Entities;
 
@@ -29,7 +30,7 @@ public class UserActivitiesQueryHandler : IRequestHandler<UserActivitiesQuery, I
         var filter = Builders<User>.Filter.Eq("_id", _currentUserService.UserId);
 
         var user = await _context.Users.Find(filter)
-                             .FirstOrDefaultAsync() ?? throw new Exception("TODO: custom exception current user not found :D");
+                             .FirstOrDefaultAsync() ?? throw new NotFoundException("Current User Not Found");
 
         return user.Activities?.Select(x => new UserActivityVm()
         {

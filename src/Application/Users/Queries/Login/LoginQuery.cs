@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interfaces;
 using Application.Users.Options;
 
 using Domain.Events;
@@ -38,11 +39,11 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, TokenVm>
     public async Task<TokenVm> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
         var user = await _context.Users.Find(x => x.UserName == request.UserName)
-                                .FirstOrDefaultAsync() ?? throw new Exception("TODO: custom user not found");
+                                .FirstOrDefaultAsync() ?? throw new NotFoundException("Not Found User Name");
         if (!user.Password.Equals(request.Password))
         {
-            await _mediator.Publish(new FailedLoginEvent(user, "1.2.3.4")); //TODO: read ip fix
-            throw new Exception("TODO: custom login failed");
+            await _mediator.Publish(new FailedLoginEvent(user, "1.2.3.4")); //TODO: real ip fix
+            throw new Exception("Login Failed");
         }
         var claims = new[] {
                         new Claim(JwtRegisteredClaimNames.Sub, _options.Value.Subject),

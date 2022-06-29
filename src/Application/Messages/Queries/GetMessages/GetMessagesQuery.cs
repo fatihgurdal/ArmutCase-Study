@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interfaces;
 
 using MediatR;
 
@@ -26,7 +27,7 @@ public class GetMessagesQueryHandler : IRequestHandler<GetMessagesQuery, IEnumer
         var currentUser = _currentUserService.UserId;
 
         var user = await _context.Users.Find(x => x.UserName == request.UserName)
-                                  .FirstOrDefaultAsync() ?? throw new Exception("TODO: custom exception not found username"); //Username kontrolü
+                                  .FirstOrDefaultAsync() ?? throw new NotFoundException("Not Found UserName"); //Username kontrolü
         //TODO: kontrol etmek lazım bu sorgu performanssız ise veya kısımlarını iki ayrı sorgu ile çekilebilir. Benchmark yapmak lazım
         var messages = _context.Messages.Find(x => (x.Sender == currentUser && x.Receiver == user.Id) || (x.Sender == user.Id && x.Receiver == currentUser)).ToList().Select(x => new MessageVm()
         {

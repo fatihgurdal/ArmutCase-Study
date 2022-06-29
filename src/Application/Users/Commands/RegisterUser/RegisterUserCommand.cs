@@ -32,7 +32,7 @@ namespace Application.Users.Commands.RegisterUser
         {
             var existUser = await _context.Users.Find(x => x.UserName == request.UserName)
                                     .FirstOrDefaultAsync();
-            if (existUser != null) throw new Exception("TODO: custom exception. This username is used");
+            if (existUser != null) throw new Exception("This username is used");
 
             var entity = new User
             {

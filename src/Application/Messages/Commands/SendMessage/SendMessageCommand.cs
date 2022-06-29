@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interfaces;
 
 using Domain.Entities;
 
@@ -28,11 +29,11 @@ namespace Application.Messages.Commands.SendMessage
         public async Task<Unit> Handle(SendMessageCommand request, CancellationToken cancellationToken)
         {
             var user = await _context.Users.Find(x => x.UserName == request.UserName)
-                                    .FirstOrDefaultAsync() ?? throw new Exception("TODO: custom exception not found username"); //Username kontrolü
+                                    .FirstOrDefaultAsync() ?? throw new NotFoundException("Not Found UserName"); //Username kontrolü
 
             if (user.BlockUsers?.Any(x => x == _currentUserService.UserId) == true) //engel kontorlü
             {
-                throw new Exception("TODO: custom exception bloked user");
+                throw new Exception("You cannot send messages to the account you are blocked");
             }
             var entity = new Message
             {

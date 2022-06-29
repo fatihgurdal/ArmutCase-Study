@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interfaces;
 
 using Domain.Entities;
 
@@ -29,7 +30,7 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserVm>
         var filter = Builders<User>.Filter.Eq("_id", request.UserId);
 
         var user = await _context.Users.Find(filter)
-                             .FirstOrDefaultAsync() ?? throw new Exception("TODO: custom exception not found");
+                             .FirstOrDefaultAsync() ?? throw new NotFoundException("Not Found User");
 
         return new UserVm()
         {

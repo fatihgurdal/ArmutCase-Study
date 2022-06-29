@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interfaces;
 
 using Domain.Entities;
 using Domain.Events;
@@ -33,7 +34,7 @@ namespace Application.Users.Commands.BlockUser
             var filter = Builders<User>.Filter.Eq("_id", _currentUserService.UserId);
 
             var user = await _context.Users.Find(filter)
-                                 .FirstOrDefaultAsync() ?? throw new Exception("TODO: custom exception current user not found :D");
+                                 .FirstOrDefaultAsync() ?? throw new NotFoundException("Not Found Current User");
             if (user.BlockUsers == null) user.BlockUsers = new List<Guid>();
 
             if (request.BlockOn && !user.BlockUsers.Contains(request.UserId))
