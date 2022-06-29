@@ -10,13 +10,10 @@ namespace Infrastructure.Persistence
 {
     public class MongoDbContext : IApplicationDbContext
     {
-        private readonly IMongoDatabase mongoDatabase;
-        private readonly MongoClient mongoClient;
-
         public MongoDbContext(IOptions<MongoOptions> options)
         {
-            mongoClient = new MongoClient(options.Value.ConnectionString);
-            mongoDatabase = mongoClient.GetDatabase(options.Value.DatabaseName);
+            var mongoClient = new MongoClient(options.Value.ConnectionString);
+            var mongoDatabase = mongoClient.GetDatabase(options.Value.DatabaseName);
 
             this.Users = mongoDatabase.GetCollection<User>(nameof(User));
             this.Messages = mongoDatabase.GetCollection<Message>(nameof(Message));
